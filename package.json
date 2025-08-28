@@ -1,0 +1,63 @@
+{
+  "name": "@magpieim/magpie-node",
+  "version": "1.0.0",
+  "description": "The Magpie API Library for NodeJS enables you to work with Magpie APIs.",
+  "keywords": [
+    "magpie",
+    "magpieim",
+    "payment processing",
+    "credit cards",
+    "api",
+    "nodejs"
+  ],
+  "homepage": "https://github.com/flairlabs/magpie-node",
+  "license": "MIT",
+  "author": "Stripe <support@magpie.im> (https://magpie.im/)",
+  "contributors": [
+    "Jerick Coneras <jerick@magpie.im>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flairlabs/magpie-node.git"
+  },
+  "bugs": "https://github.com/flairlabs/magpie-node/issues",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test && npm run build",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "ci:install": "npm ci",
+    "ci:test": "npm test"
+  },
+  "dependencies": {
+    "axios": "^1.11.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.34.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.41.0",
+    "@typescript-eslint/parser": "^8.41.0",
+    "eslint": "^9.34.0",
+    "jest": "^30.1.1",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.1",
+    "typescript": "^5.9.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
