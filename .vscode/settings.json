@@ -1,0 +1,72 @@
+{
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+
+  "// TypeScript settings": "",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  "// ESLint configuration": "",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "eslint.workingDirectories": ["./"],
+  "eslint.experimental.useFlatConfig": true,
+
+  "// Prettier as default formatter": "",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "// File explorer settings": "",
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/coverage": true,
+    "**/.nyc_output": true
+  },
+
+  "// Git settings": "",
+  "git.ignoreLimitWarning": true,
+
+  "// Terminal settings": "",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.defaultProfile.linux": "bash",
+
+  "// SDK-specific settings": "",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/coverage": true
+  },
+
+  "// TypeScript compiler options": "",
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.suggest.completeFunctionCalls": true,
+
+  "// Auto-save for better development flow": "",
+  "files.autoSave": "onFocusChange",
+
+  "// Word wrap for better readability": "",
+  "editor.wordWrap": "on",
+  "editor.wordWrapColumn": 80,
+
+  "json.schemaDownload.enable": false,
+  "json.validate.enable": true,
+  "yaml.schemaStore.enable": false
+}
