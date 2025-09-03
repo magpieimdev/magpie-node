@@ -4,20 +4,64 @@ import type { MagpieErrorType } from "./errors";
 import { MagpieError } from "./errors";
 import { ApiResponse, HttpMethod, MagpieConfig, RequestOptions } from "./types/magpie";
 
-// Extend Axios types to include metadata
+/**
+ * Metadata attached to HTTP requests for tracking and debugging.
+ * @internal
+ */
 interface RequestMetadata {
+  /** Timestamp when the request was initiated */
   startTime?: number;
 }
 
+/**
+ * Extended Axios request configuration with additional metadata.
+ * @internal
+ */
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
+  /** Additional request metadata */
   metadata?: RequestMetadata;
 }
 
+/**
+ * Base client class that handles HTTP communication with the Magpie API.
+ * 
+ * This class provides the foundation for all API interactions, including:
+ * - Authentication via API keys
+ * - Request/response interceptors
+ * - Automatic retry logic with exponential backoff
+ * - Error handling and transformation
+ * - Debug logging capabilities
+ * - Request timeout and configuration management
+ * 
+ * @internal This class is not intended for direct use by SDK consumers
+ */
 export class BaseClient {
+  /** Axios instance configured for Magpie API communication */
   private http: AxiosInstance;
+  
+  /** The secret API key used for authentication */
   private secretKey: string;
+  
+  /** Complete client configuration with defaults applied */
   private config: Required<MagpieConfig>;
 
+  /**
+   * Creates a new BaseClient instance.
+   * 
+   * @param secretKey - Magpie secret API key (must start with 'sk_')
+   * @param config - Optional configuration overrides
+   * 
+   * @throws {Error} When secretKey is missing, invalid, or malformed
+   * 
+   * @example
+   * ```typescript
+   * const client = new BaseClient('sk_test_123', {
+   *   timeout: 10000,
+   *   maxRetries: 3,
+   *   debug: true
+   * });
+   * ```
+   */
   constructor(
     secretKey: string,
     config: MagpieConfig = {}
@@ -252,6 +296,29 @@ export class BaseClient {
     return sanitized;
   }
 
+  /**
+   * Makes a generic HTTP request to the Magpie API.
+   * 
+   * This is the core method used by all resource classes to communicate with the API.
+   * It handles request preparation, data serialization, error handling, and response parsing.
+   * 
+   * @template TResponse - Expected response data type
+   * @param method - HTTP method (GET, POST, PUT, PATCH, DELETE)
+   * @param endpoint - API endpoint path (with or without leading slash)
+   * @param data - Request payload data or query parameters
+   * @param options - Additional request options and configuration
+   * 
+   * @returns Promise that resolves to an ApiResponse containing the response data and metadata
+   * 
+   * @throws {MagpieError} When the request fails or API returns an error response
+   * 
+   * @example
+   * ```typescript
+   * const response = await client.request('GET', '/customers', { limit: 10 });
+   * console.log(response.data); // Customer list
+   * console.log(response.requestId); // Request ID for debugging
+   * ```
+   */
   public async request<TResponse = any>(
     method: HttpMethod,
     endpoint: string,
@@ -300,6 +367,21 @@ export class BaseClient {
   }
 
   // Convenience methods
+  /**
+   * Performs a GET request to the specified endpoint.
+   * 
+   * @template TResponse - Expected response data type
+   * @param endpoint - API endpoint path
+   * @param params - Query parameters to append to the request
+   * @param options - Additional request options
+   * 
+   * @returns Promise that resolves to the API response
+   * 
+   * @example
+   * ```typescript
+   * const customers = await client.get('/customers', { limit: 10, offset: 20 });
+   * ```
+   */
   public async get<TResponse = any>(
     endpoint: string,
     params?: any,
@@ -308,6 +390,24 @@ export class BaseClient {
     return this.request<TResponse>('GET', endpoint, params, options);
   }
 
+  /**
+   * Performs a POST request to the specified endpoint.
+   * 
+   * @template TResponse - Expected response data type
+   * @param endpoint - API endpoint path
+   * @param data - Request payload data
+   * @param options - Additional request options
+   * 
+   * @returns Promise that resolves to the API response
+   * 
+   * @example
+   * ```typescript
+   * const customer = await client.post('/customers', {
+   *   name: 'John Doe',
+   *   email: 'john@example.com'
+   * });
+   * ```
+   */
   public async post<TResponse = any>(
     endpoint: string,
     data?: any,
@@ -316,6 +416,16 @@ export class BaseClient {
     return this.request<TResponse>('POST', endpoint, data, options);
   }
 
+  /**
+   * Performs a PUT request to the specified endpoint.
+   * 
+   * @template TResponse - Expected response data type
+   * @param endpoint - API endpoint path
+   * @param data - Request payload data
+   * @param options - Additional request options
+   * 
+   * @returns Promise that resolves to the API response
+   */
   public async put<TResponse = any>(
     endpoint: string,
     data?: any,
@@ -324,6 +434,16 @@ export class BaseClient {
     return this.request<TResponse>('PUT', endpoint, data, options);
   }
 
+  /**
+   * Performs a PATCH request to the specified endpoint.
+   * 
+   * @template TResponse - Expected response data type
+   * @param endpoint - API endpoint path
+   * @param data - Request payload data
+   * @param options - Additional request options
+   * 
+   * @returns Promise that resolves to the API response
+   */
   public async patch<TResponse = any>(
     endpoint: string,
     data?: any,
@@ -332,6 +452,16 @@ export class BaseClient {
     return this.request<TResponse>('PATCH', endpoint, data, options);
   }
 
+  /**
+   * Performs a DELETE request to the specified endpoint.
+   * 
+   * @template TResponse - Expected response data type
+   * @param endpoint - API endpoint path
+   * @param data - Optional request payload data
+   * @param options - Additional request options
+   * 
+   * @returns Promise that resolves to the API response
+   */
   public async delete<TResponse = any>(
     endpoint: string,
     data?: any,
@@ -341,19 +471,65 @@ export class BaseClient {
   }
 
   // Configuration getters
+  /**
+   * Returns the current client configuration.
+   * 
+   * @returns A read-only copy of the complete client configuration
+   * 
+   * @example
+   * ```typescript
+   * const config = client.getConfig();
+   * console.log(config.timeout); // 30000
+   * console.log(config.maxRetries); // 3
+   * ```
+   */
   public getConfig(): Readonly<Required<MagpieConfig>> {
     return { ...this.config };
   }
 
+  /**
+   * Returns the base URL used for API requests.
+   * 
+   * @returns The base API URL (e.g., 'https://api.magpie.im')
+   */
   public getBaseUrl(): string {
     return this.config.baseUrl;
   }
 
+  /**
+   * Enables or disables debug logging for HTTP requests and responses.
+   * 
+   * @param debug - Whether to enable debug logging
+   * 
+   * @example
+   * ```typescript
+   * client.setDebug(true); // Enable detailed request/response logging
+   * ```
+   */
   public setDebug(debug: boolean): void {
     this.config.debug = debug;
   }
 
   // Test the connection
+  /**
+   * Tests connectivity to the Magpie API.
+   * 
+   * This method sends a lightweight request to verify that the client can
+   * successfully communicate with the API using the provided credentials.
+   * 
+   * @returns Promise that resolves to `true` if the connection is successful,
+   *          `false` if there are any connectivity or authentication issues
+   * 
+   * @example
+   * ```typescript
+   * const isConnected = await client.ping();
+   * if (isConnected) {
+   *   console.log('✅ Connected to Magpie API');
+   * } else {
+   *   console.error('❌ Failed to connect to Magpie API');
+   * }
+   * ```
+   */
   public async ping(): Promise<boolean> {
     try {
       await this.get('/ping');

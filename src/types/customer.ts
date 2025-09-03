@@ -1,4 +1,10 @@
 
+/**
+ * Parameters for creating a new customer.
+ * 
+ * Customers are entities that represent your buyers. They can have
+ * multiple payment sources attached and can be used for recurring billing.
+ */
 export interface CustomerCreateParams {
   /** The email address of the customer */
   email: string;
@@ -17,6 +23,12 @@ export interface CustomerCreateParams {
   metadata?: Record<string, any>;
 }
 
+/**
+ * Parameters for updating an existing customer.
+ * 
+ * All fields are optional since you only need to provide the
+ * fields you want to update.
+ */
 export interface CustomerUpdateParams {
   /** An arbitrary string that you can attach to a customer object. */
   description?: string;
@@ -32,6 +44,13 @@ export interface CustomerUpdateParams {
   metadata?: Record<string, any>;
 }
 
+/**
+ * A customer represents a buyer in your system.
+ * 
+ * Customers have email addresses and can have multiple payment sources
+ * attached. They're useful for recurring billing and keeping track of
+ * payment history.
+ */
 export interface Customer {
   /** The unique identifier of the object */
   id: string;

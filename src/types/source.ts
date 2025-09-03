@@ -1,5 +1,15 @@
 import { Billing, Shipping } from "./common";
 
+/**
+ * Types of payment sources supported by Magpie.
+ * 
+ * - `card`: Credit or debit cards
+ * - `bpi`: BPI direct bank transfer
+ * - `qrph`: QR PH (InstaPay/PESONet QR)
+ * - `gcash`: GCash e-wallet
+ * - `maya`: Maya (formerly PayMaya) e-wallet
+ * - `paymaya`: Legacy PayMaya e-wallet
+ */
 export type SourceType = 
   | 'card'
   | 'bpi'
@@ -8,6 +18,12 @@ export type SourceType =
   | 'maya'
   | 'paymaya';
 
+/**
+ * Redirect URLs for payment sources that require customer redirection.
+ * 
+ * Some payment methods require redirecting the customer to complete
+ * the payment flow (e.g., online banking, e-wallets).
+ */
 export interface SourceRedirect {
   /** The URL to redirect to after the payment is successful. */
   success: string;
@@ -19,6 +35,12 @@ export interface SourceRedirect {
   notify?: string;
 }
 
+/**
+ * Information about the owner of a payment source.
+ * 
+ * Contains contact and address information for the person or
+ * entity that owns the payment method.
+ */
 export interface SourceOwner {
   /** The name of the owner. */
   name: string;
@@ -33,6 +55,12 @@ export interface SourceOwner {
   shipping?: Shipping;
 }
 
+/**
+ * Parameters for creating a card payment source.
+ * 
+ * Card sources represent credit or debit cards that can be used
+ * for payments. All card information is tokenized for security.
+ */
 export interface CardSourceCreateParams {
   /** The name of the card holder. */
   name: string;
@@ -68,6 +96,12 @@ export interface CardSourceCreateParams {
   address_zip?: string;
 }
 
+/**
+ * Parameters for creating a payment source.
+ * 
+ * Payment sources represent different payment methods that can be used
+ * for payments. All payment information is tokenized for security.
+ */
 export interface SourceCreateParams {
   /** The type of the source. */
   type: SourceType;
@@ -82,6 +116,9 @@ export interface SourceCreateParams {
   owner?: SourceOwner;
 }
 
+/**
+ * A card object represents a credit or debit card payment source type.
+ */
 export interface SourceCard {
   /** The unique identifier of the card object. */
   id: string;
@@ -135,6 +172,9 @@ export interface SourceCard {
   issuing_bank: string;
 }
 
+/**
+ * A bank account object represents a bank account payment source type.
+ */
 export interface SourceBankAccount {
   /** The reference ID of the bank account. */
   reference_id: string;
@@ -162,6 +202,12 @@ export interface SourceBankAccount {
   metadata: Record<string, any>;
 }
 
+/**
+ * Source objects allow you to accept a variety of payment methods.
+ * They represent a customer’s payment instrument, 
+ * and can be used with the Magpie API just like a Card object: 
+ * once chargeable, they can be charged, or can be attached to customers.
+ */
 export interface Source {
   /** The unique identifier of the source object. */
   id: string;

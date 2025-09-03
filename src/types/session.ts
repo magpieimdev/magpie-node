@@ -1,18 +1,43 @@
 import { Charge } from "./charge";
 import { BillingAddressCollection, Branding, LineItem, ShippingAddressCollection } from "./common";
 
+/**
+ * Mode of the checkout session determining its behavior.
+ * 
+ * - `payment`: One-time payment for products or services
+ * - `setup`: Save payment method for future use without charging
+ * - `subscription`: Set up recurring subscription payments
+ * - `save_card`: Save card details for future transactions
+ */
 export type CheckoutSessionMode =
   | 'payment'
   | 'setup'
   | 'subscription'
   | 'save_card';
 
+/**
+ * Type of transaction for customizing the submit button text.
+ * 
+ * - `pay`: Generic "Pay" button
+ * - `book`: "Book" for reservations or appointments
+ * - `donate`: "Donate" for charitable contributions
+ * - `send`: "Send" for money transfers or gifts
+ */
 export type CheckoutSubmitType =
   | 'pay'
   | 'book'
   | 'donate'
   | 'send';
 
+/**
+ * Status of a checkout session indicating its payment state.
+ * 
+ * - `paid`: Payment was successfully completed
+ * - `unpaid`: No payment has been made yet
+ * - `expired`: Session has expired without payment
+ * - `authorized`: Payment was authorized but not captured
+ * - `voided`: Session was manually canceled
+ */
 export type CheckoutSessionStatus =
   | 'paid'
   | 'unpaid'
@@ -20,6 +45,12 @@ export type CheckoutSessionStatus =
   | 'authorized'
   | 'voided';
 
+/**
+ * Address information collected during checkout.
+ * 
+ * Includes detailed address fields specific to Philippine
+ * address format including barangay information.
+ */
 export interface CheckoutSessionAddress {
   /** The customer's full name or business name. */
   name: string;
@@ -46,6 +77,12 @@ export interface CheckoutSessionAddress {
   country: string;
 }
 
+/**
+ * Merchant information displayed in the checkout session.
+ * 
+ * Contains business details shown to customers during checkout
+ * for transparency and support purposes.
+ */
 export interface CheckoutSessionMerchant {
   /** The name of the merchant. */
   name: string;
@@ -57,6 +94,13 @@ export interface CheckoutSessionMerchant {
   support_phone: string | null;
 }
 
+/**
+ * Parameters for creating a new checkout session.
+ * 
+ * Checkout sessions create hosted payment pages where customers
+ * can securely enter their payment information. Configure items,
+ * payment methods, and redirect URLs for a complete payment flow.
+ */
 export interface CheckoutSessionCreateParams {
   /** A custom code provided by a bank you want to use for online banking payment methods */
   bank_code?: string;
@@ -126,11 +170,23 @@ export interface CheckoutSessionCreateParams {
   success_url: string;
 }
 
+/**
+ * Parameters for capturing an authorized checkout session.
+ * 
+ * When a checkout session is created in authorization mode,
+ * use these parameters to capture the authorized amount.
+ */
 export interface CheckoutSessionCaptureParams {
   /** The amount to capture. Can be less than the authorized amount but cannot exceed the authorized amount. */
   amount: number;
 }
 
+/**
+ * A checkout session represents a customer's journey through checkout.
+ * 
+ * Sessions contain all the information about a customer's checkout process
+ * including items, payment status, collected information, and configuration.
+ */
 export interface CheckoutSession {
   /** The unique identifier of the checkout session object. */
   id: string;

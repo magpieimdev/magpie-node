@@ -10,6 +10,7 @@ import type * as RefundTypes from './refund';
 import type * as PaymentRequestTypes from './request';
 import type * as CheckoutSessionTypes from './session';
 import type * as SourceTypes from './source';
+import type * as WebhookTypes from './webhook';
 
 // Create the main Magpie namespace
 export namespace Magpie {
@@ -75,6 +76,13 @@ export namespace Magpie {
   export type PaymentLink = PaymentLinkTypes.PaymentLink;
   export type PaymentLinkCreateParams = PaymentLinkTypes.PaymentLinkCreateParams;
   export type PaymentLinkUpdateParams = PaymentLinkTypes.PaymentLinkUpdateParams;
+
+  // Webhook types
+  export type WebhookEvent<T = unknown> = WebhookTypes.WebhookEvent<T>;
+  export type WebhookEndpoint = WebhookTypes.WebhookEndpoint;
+  export type WebhookSignatureConfig = WebhookTypes.WebhookSignatureConfig;
+  export type WebhookSignature = WebhookTypes.WebhookSignature;
+  export type WebhookEventType = WebhookTypes.WebhookEventType;
 }
 
 // Export the namespace as default for clean imports
@@ -90,4 +98,5 @@ export * from './refund';
 export * from './request';
 export * from './session';
 export * from './source';
+export * from './webhook';
 

@@ -1,7 +1,23 @@
 import { AxiosRequestConfig } from "axios";
 
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
+/**
+ * HTTP methods supported by the Magpie API.
+ */
+export type HttpMethod = 
+  | 'GET'
+  | 'POST'
+  | 'PUT'
+  | 'DELETE'
+  | 'PATCH'
+  | 'HEAD'
+  | 'OPTIONS';
 
+/**
+ * Configuration options for the Magpie SDK client.
+ * 
+ * These options control the behavior of HTTP requests, retry logic,
+ * debugging, and other client-level settings.
+ */
 export interface MagpieConfig {
   /** Base URL for the API. Defaults to https://api.magpie.im */
   baseUrl?: string;
@@ -22,6 +38,12 @@ export interface MagpieConfig {
   apiVersion?: string;
 }
 
+/**
+ * Additional options that can be passed to individual API requests.
+ * 
+ * These options allow for fine-grained control over individual requests,
+ * including idempotency, field expansion, retry behavior, and Axios configuration.
+ */
 export interface RequestOptions {
   /** Idempotency key for for safe retries of non-idempotent requests */
   idempotencyKey?: string;
@@ -37,6 +59,14 @@ export interface RequestOptions {
 }
 
 
+/**
+ * Standard response wrapper for all Magpie API responses.
+ * 
+ * This interface wraps all API response data with additional metadata
+ * including HTTP status, headers, and request identification.
+ * 
+ * @template T - The type of the response data
+ */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface ApiResponse<T = any> {
   /** The response data */
@@ -53,6 +83,12 @@ export interface ApiResponse<T = any> {
   requestId: string | null;
 }
 
+/**
+ * Options for paginating and filtering list requests.
+ * 
+ * These options are used when retrieving lists of resources like customers,
+ * charges, or payment sources. Supports cursor-based pagination and filtering.
+ */
 export interface ListOptions {
   /** Number of items to return. Default and maximum is 100 */
   limit?: number;
@@ -71,6 +107,12 @@ export interface ListOptions {
   [key: string]: any;
 }
 
+/**
+ * Filter for date-based queries using Unix timestamps.
+ * 
+ * This interface allows for flexible date range filtering using
+ * Unix timestamps (seconds since epoch).
+ */
 export interface DateRangeFilter {
   /** Greater than (exclusive) */
   gt?: number;
@@ -85,6 +127,14 @@ export interface DateRangeFilter {
   lte?: number;  
 }
 
+/**
+ * Standard response format for paginated list endpoints.
+ * 
+ * This interface represents the structure of responses from list endpoints,
+ * providing the data array along with pagination metadata.
+ * 
+ * @template T - The type of items in the list
+ */
 export interface ListResponse<T> {
   /** Object type */
   object: 'list';
@@ -103,6 +153,12 @@ export interface ListResponse<T> {
 }
   
 
+/**
+ * Response format for successful deletion operations.
+ * 
+ * This interface represents the response structure when a resource
+ * is successfully deleted from the Magpie system.
+ */
 export interface DeletedResponse {
   /** ID of the deleted object */
   id: string;
@@ -114,6 +170,12 @@ export interface DeletedResponse {
   deleted: boolean;
 }
 
+/**
+ * Metadata about the HTTP response for the last API request.
+ * 
+ * This interface is attached to all API response objects to provide
+ * debugging information and HTTP response metadata.
+ */
 export interface LastResponse {
   /** HTTP status code */
   statusCode: number;

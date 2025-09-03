@@ -1,10 +1,23 @@
 import { Branding, LineItem, ShippingAddressCollection } from "./common";
 
+/**
+ * A line item for a payment link with inventory tracking.
+ * 
+ * Extends the base LineItem with additional fields specific
+ * to payment links, including stock management.
+ */
 export interface PaymentLinkItem extends LineItem {
   /** The total number of stocks remaining. */
   remaining: number;
 }
 
+/**
+ * Parameters for creating a new payment link.
+ * 
+ * Payment links are shareable URLs that allow customers to make payments
+ * without you building a custom checkout flow. Perfect for social media,
+ * email marketing, or one-off sales.
+ */
 export interface PaymentLinkCreateParams {
   /** Whether the quantity of the line item can be adjusted by the customer. */
   allow_adjustable_quantity: boolean;
@@ -50,6 +63,12 @@ export interface PaymentLinkCreateParams {
   shipping_address_collection?: ShippingAddressCollection;
 }
 
+/**
+ * Parameters for updating an existing payment link.
+ * 
+ * You can update most aspects of a payment link including items,
+ * pricing, expiry date, and configuration options.
+ */
 export interface PaymentLinkUpdateParams {
   /** Whether the quantity of the line item can be adjusted by the customer. */
   allow_adjustable_quantity: boolean;
@@ -92,6 +111,12 @@ export interface PaymentLinkUpdateParams {
   shipping_address_collection?: ShippingAddressCollection;
 }
 
+/**
+ * A payment link represents a hosted payment page accessible via URL.
+ * 
+ * Payment links provide a no-code solution for collecting payments.
+ * Share the URL via email, social media, or embed it in your website.
+ */
 export interface PaymentLink {
   /** The unique identifier of the Payment Link object. */
   id: string;

@@ -1,3 +1,9 @@
+/**
+ * Physical address information.
+ * 
+ * Used throughout the Magpie API for billing addresses, shipping addresses,
+ * and other location-based data. Follows international address standards.
+ */
 export interface Address {
   /** Address line 1 (e.g., street, PO Box, or company name). */
   line1?: string;
@@ -18,6 +24,12 @@ export interface Address {
   zip_code?: string;
 }
 
+/**
+ * Billing information including address and contact details.
+ * 
+ * Extends the base Address interface with billing-specific fields
+ * like name, phone, and email for payment processing.
+ */
 export interface Billing extends Address {
   /** The customer’s full name or business name. */
   name: string;
@@ -29,6 +41,12 @@ export interface Billing extends Address {
   email?: string;
 }
 
+/**
+ * Shipping information including address and recipient details.
+ * 
+ * Extends the base Address interface with shipping-specific fields
+ * for delivery and recipient contact information.
+ */
 export interface Shipping extends Address {
   /** Customer or recipient name. */
   name: string;
@@ -40,6 +58,12 @@ export interface Shipping extends Address {
   email?: string;
 }
 
+/**
+ * Branding configuration for payment pages and receipts.
+ * 
+ * Controls the visual appearance of checkout pages, payment links,
+ * and other customer-facing payment interfaces.
+ */
 export interface Branding {
   /** URL to an icon image. */
   icon?: string;
@@ -57,8 +81,20 @@ export interface Branding {
   secondary_color: string;
 }
 
+/**
+ * Controls how billing address information is collected during checkout.
+ * 
+ * - `auto`: Collect billing address only if required by payment method
+ * - `required`: Always collect billing address
+ */
 export type BillingAddressCollection = 'auto' | 'required';
 
+/**
+ * Represents an individual item or service in a payment or invoice.
+ * 
+ * Line items are used in checkout sessions, payment links, and invoices
+ * to describe the products or services being purchased.
+ */
 export interface LineItem {
   /** The amount of the line item in the smallest currency unit (e.g., cents). */
   amount: number;
@@ -73,6 +109,12 @@ export interface LineItem {
   quantity: number;
 }
 
+/**
+ * Configuration for collecting shipping addresses during checkout.
+ * 
+ * Specifies which countries are allowed for shipping address collection,
+ * enabling geographic restrictions for product fulfillment.
+ */
 export interface ShippingAddressCollection {
   /** A list of two-letter ISO country codes. Shipping address will be collected only from these countries. */
   allowed_countries: string[];

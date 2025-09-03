@@ -1,6 +1,12 @@
 import { Charge } from "./charge";
 import { Branding, LineItem } from "./common";
 
+/**
+ * Delivery status for payment request notifications.
+ * 
+ * Tracks whether the payment request was successfully delivered
+ * to the customer via different communication channels.
+ */
 export interface PaymentRequestDelivered {
   /** Whether the payment request was delivered to the customer via email. */
   email: boolean;
@@ -9,6 +15,13 @@ export interface PaymentRequestDelivered {
   sms: boolean;
 }
 
+/**
+ * Parameters for creating a new payment request.
+ * 
+ * Payment requests allow you to request payment from customers
+ * via email or SMS. They receive a link to a secure payment page
+ * where they can complete the transaction.
+ */
 export interface PaymentRequestCreateParams {
   /** Details on branding elements to apply when rendering the Payment Request page. */
   branding?: Branding;
@@ -39,11 +52,24 @@ export interface PaymentRequestCreateParams {
   require_auth?: boolean;
 }
 
+/**
+ * Parameters for voiding a payment request.
+ * 
+ * Voiding a payment request cancels it and prevents the customer
+ * from making any further payment attempts.
+ */
 export interface PaymentRequestVoidParams {
   /** The reason for voiding the payment request. */
   reason: string;
 }
 
+/**
+ * A payment request represents a request for payment sent to a customer.
+ * 
+ * Payment requests are sent via email or SMS and provide customers
+ * with a secure link to complete their payment. They're perfect for
+ * invoicing, subscription billing, or one-time payment collection.
+ */
 export interface PaymentRequest {
   /** The unique identifier of the payment request object. */
   id: string;

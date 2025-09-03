@@ -1,8 +1,21 @@
 import { Refund } from "./refund";
 import { Source, SourceOwner } from "./source";
 
+/**
+ * Status of a charge indicating its current processing state.
+ * 
+ * - `pending`: Charge is being processed or awaiting authentication
+ * - `succeeded`: Charge has been successfully completed
+ * - `failed`: Charge processing failed
+ */
 export type ChargeStatus = 'pending' | 'succeeded' | 'failed';
 
+/**
+ * Action required to complete a charge (e.g., 3D Secure authentication).
+ * 
+ * Some charges require additional customer interaction to complete,
+ * such as entering an OTP or completing 3D Secure authentication.
+ */
 export interface ChargeAction {
   /** The action type */
   type: string;
@@ -11,6 +24,10 @@ export interface ChargeAction {
   url: string;
 }
 
+/**
+ * Link from payment provider response.
+ * @internal
+ */
 export interface ChargeProviderResponseLink {
   /** The provider response link href */
   href: string;
@@ -19,6 +36,13 @@ export interface ChargeProviderResponseLink {
   rel: string;
 }
 
+/**
+ * Response data from the payment provider.
+ * 
+ * Contains raw response information from the underlying payment
+ * processor for debugging and troubleshooting purposes.
+ * @internal
+ */
 export interface ChargeProviderResponse {
   /** The provider response links */
   links: ChargeProviderResponseLink[]; 
@@ -33,6 +57,12 @@ export interface ChargeProviderResponse {
   logref: string;
 }
 
+/**
+ * Information about a failed charge.
+ * 
+ * When a charge fails, this interface provides detailed information
+ * about why it failed and suggested next steps for resolution.
+ */
 export interface ChargeFailure {
   /** The failure reason */
   reason: string;
@@ -47,6 +77,12 @@ export interface ChargeFailure {
   provider_response: ChargeProviderResponse;
 }
 
+/**
+ * Parameters for creating a new charge.
+ * 
+ * This interface defines all the required and optional parameters
+ * needed to create a charge against a payment source.
+ */
 export interface ChargeCreateParams {
   /** The amount to charge in the smallest currency unit (e.g., cents) */
   amount: number;
@@ -80,11 +116,23 @@ export interface ChargeCreateParams {
   metadata: Record<string, any>;
 }  
 
+/**
+ * Parameters for capturing a previously authorized charge.
+ * 
+ * When a charge is created with `capture: false`, it's only authorized.
+ * Use these parameters to capture the authorized amount later.
+ */
 export interface ChargeCaptureParams {
   /** The amount to capture in the smallest currency unit (e.g., cents). Must not be greater than the amount of the charge. */
   amount: number;
 }
 
+/**
+ * Parameters for verifying a charge that requires additional authentication.
+ * 
+ * Some payment methods (like direct bank payments) require additional
+ * verification steps such as OTP confirmation.
+ */
 export interface ChargeVerifyParams {
   /** The confirmation ID from the provider. */
   confirmation_id: string;
@@ -93,6 +141,12 @@ export interface ChargeVerifyParams {
   otp: string;
 }
 
+/**
+ * A charge represents a payment transaction.
+ * 
+ * Charges represents a single attempt to move money into your Magpie account.
+ * They can be immediately captured or authorized for later capture.
+ */
 export interface Charge {
   /** A unique identifier for the charge. */
   id: string;

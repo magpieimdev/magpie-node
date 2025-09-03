@@ -1,3 +1,20 @@
+/**
+ * Types of errors that can occur when using the Magpie SDK.
+ * 
+ * Each error type corresponds to different failure scenarios:
+ * - `api_error`: Server-side errors (5xx responses)
+ * - `authentication_error`: Invalid or missing API credentials
+ * - `card_error`: Payment method or card-related issues
+ * - `idempotency_error`: Duplicate request with different parameters
+ * - `invalid_request_error`: Malformed request or missing parameters
+ * - `rate_limit_error`: Too many requests in a time period
+ * - `validation_error`: Request validation failed
+ * - `permission_error`: Insufficient permissions for the operation
+ * - `network_error`: Network connectivity issues
+ * - `not_found_error`: Requested resource not found
+ * - `timeout_error`: Request timed out
+ * - `configuration_error`: SDK configuration issues
+ */
 export type MagpieErrorType =
   | 'api_error'
   | 'authentication_error'
@@ -12,6 +29,10 @@ export type MagpieErrorType =
   | 'timeout_error'
   | 'configuration_error';
 
+/**
+ * Raw error response structure from API calls.
+ * @internal
+ */
 interface ApiErrorResponse {
   response?: {
     data?: {
@@ -34,6 +55,13 @@ interface ApiErrorResponse {
   code?: string;
 }
 
+/**
+ * Detailed information about a Magpie API error.
+ * 
+ * This interface contains all the relevant information about an error
+ * that occurred during an API request, including contextual details
+ * for debugging and error handling.
+ */
 export interface MagpieErrorDetails {
   /** Error message */
   message: string;
@@ -67,18 +95,79 @@ export interface MagpieErrorDetails {
   headers?: Record<string, any>;
 }
 
+/**
+ * Base error class for all Magpie SDK errors.
+ * 
+ * This class extends the native Error class to provide additional
+ * context about API errors, including error types, status codes,
+ * and debugging information.
+ * 
+ * @example
+ * ```typescript
+ * try {
+ *   await magpie.charges.create(chargeParams);
+ * } catch (error) {
+ *   if (error instanceof MagpieError) {
+ *     console.error('Magpie error:', error.type);
+ *     console.error('Status code:', error.statusCode);
+ *     console.error('Request ID:', error.requestId);
+ *     
+ *     // Handle specific error types
+ *     if (error.isAuthenticationError()) {
+ *       // Handle auth errors
+ *     } else if (error.isValidationError()) {
+ *       // Handle validation errors
+ *     } else if (error.isRetryable()) {
+ *       // Retry the request
+ *     }
+ *   }
+ * }
+ * ```
+ */
 export class MagpieError extends Error {
+  /** The category of error that occurred */
   public readonly type: MagpieErrorType;
+  
+  /** Specific error code for programmatic handling */
   public readonly code?: string;
+  
+  /** HTTP status code if the error came from an API response */
   public readonly statusCode?: number;
+  
+  /** Unique identifier for the failed request (useful for support) */
   public readonly requestId?: string;
+  
+  /** The parameter that caused the error (for validation errors) */
   public readonly param?: string;
+  
+  /** URL to documentation about this error */
   public readonly docUrl?: string;
+  
+  /** Decline code for card-related errors */
   public readonly declineCode?: string;
+  
+  /** ID of the charge associated with the error */
   public readonly chargeId?: string;
+  
+  /** Response headers from the failed request */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public readonly headers?: Record<string, any>;
 
+  /**
+   * Creates a new MagpieError instance.
+   * 
+   * @param details - Detailed error information
+   * 
+   * @example
+   * ```typescript
+   * const error = new MagpieError({
+   *   message: 'Invalid API key provided',
+   *   type: 'authentication_error',
+   *   code: 'invalid_api_key',
+   *   statusCode: 401
+   * });
+   * ```
+   */
   constructor(details: MagpieErrorDetails) {
     super(details.message);
 
@@ -103,7 +192,15 @@ export class MagpieError extends Error {
   }
 
   /**
-   * Creates a MagpieError from an API error response.
+   * Creates a MagpieError from an Axios error response.
+   * 
+   * This static method is used internally to convert HTTP errors
+   * from the underlying Axios library into structured MagpieError instances.
+   * 
+   * @param error - The Axios error response
+   * @returns A new MagpieError instance with parsed error details
+   * 
+   * @internal
    */
   static fromAxiosError(error: ApiErrorResponse): MagpieError {
     const {response} = error;
@@ -226,7 +323,20 @@ export class MagpieError extends Error {
   }
 
   /**
-   * Convert error to JSON for logging
+   * Converts the error to a plain object for logging or serialization.
+   * 
+   * @returns A plain object containing all error properties
+   * 
+   * @example
+   * ```typescript
+   * try {
+   *   await magpie.charges.create(params);
+   * } catch (error) {
+   *   if (error instanceof MagpieError) {
+   *     console.log(JSON.stringify(error.toJSON(), null, 2));
+   *   }
+   * }
+   * ```
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public toJSON(): Record<string, any> {
@@ -247,28 +357,70 @@ export class MagpieError extends Error {
   }
 
   /**
-   * Check if error is retryable
+   * Determines if the error represents a temporary failure that could be retried.
+   * 
+   * @returns `true` if the request should be retried, `false` otherwise
+   * 
+   * @example
+   * ```typescript
+   * if (error.isRetryable()) {
+   *   // Wait and retry the request
+   *   await new Promise(resolve => setTimeout(resolve, 1000));
+   *   return await retryRequest();
+   * }
+   * ```
    */
   public isRetryable(): boolean {
     return ['api_error', 'rate_limit_error', 'network_error', 'timeout_error'].includes(this.type);
   }
 
   /**
-   * Check if error is related to authentication
+   * Checks if the error is related to authentication or authorization.
+   * 
+   * @returns `true` if this is an authentication error, `false` otherwise
+   * 
+   * @example
+   * ```typescript
+   * if (error.isAuthenticationError()) {
+   *   // Prompt user to re-authenticate or check API keys
+   *   redirectToLogin();
+   * }
+   * ```
    */
   public isAuthenticationError(): boolean {
     return this.type === 'authentication_error';
   }
 
   /**
-   * Check if error is a validation error
+   * Checks if the error is due to invalid request parameters or validation failure.
+   * 
+   * @returns `true` if this is a validation error, `false` otherwise
+   * 
+   * @example
+   * ```typescript
+   * if (error.isValidationError()) {
+   *   console.error('Invalid parameter:', error.param);
+   *   // Show user-friendly validation message
+   * }
+   * ```
    */
   public isValidationError(): boolean {
     return this.type === 'validation_error' || this.type === 'invalid_request_error';
   }
 
   /**
-   * Check if error is related to rate limiting
+   * Checks if the error is due to rate limiting.
+   * 
+   * @returns `true` if this is a rate limit error, `false` otherwise
+   * 
+   * @example
+   * ```typescript
+   * if (error.isRateLimitError()) {
+   *   // Implement exponential backoff
+   *   const delay = Math.min(1000 * Math.pow(2, retryCount), 30000);
+   *   await new Promise(resolve => setTimeout(resolve, delay));
+   * }
+   * ```
    */
   public isRateLimitError(): boolean {
     return this.type === 'rate_limit_error';
