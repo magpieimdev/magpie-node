@@ -1,3 +1,5 @@
 import { Magpie } from "./magpie";
 
-export = Magpie;
+// Export as both default and named export for maximum compatibility
+export default Magpie;
+export { Magpie };
