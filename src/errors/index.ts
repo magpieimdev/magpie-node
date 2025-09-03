@@ -110,16 +110,30 @@ export class MagpieError extends Error {
 
     if (response?.data) {
       const { data, status, headers } = response;
+      
+      // Handle string responses
+      if (typeof data === 'string') {
+        return new MagpieError({
+          message: data,
+          type: MagpieError.mapStatusToType(status),
+          code: `http_${status ?? 'unknown'}`,
+          statusCode: status,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          requestId: headers?.['request-id'] ?? headers?.['x-request-id'],
+          headers,
+        });
+      }
+      
       const errorData = data.error ?? data;
       
       // Safely access properties that might exist on either error or data
       const errorMessage = errorData?.message ?? data.message ?? `HTTP ${status ?? 'Unknown'} Error`;
-      const errorType = ('type' in errorData) ? errorData.type : undefined;
-      const errorCode = ('code' in errorData) ? errorData.code : `http_${status ?? 'unknown'}`;
-      const param = ('param' in errorData) ? errorData.param : undefined;
-      const docUrl = ('doc_url' in errorData) ? errorData.doc_url : undefined;
-      const declineCode = ('decline_code' in errorData) ? errorData.decline_code : undefined;
-      const chargeId = ('charge_id' in errorData) ? errorData.charge_id : undefined;
+      const errorType = (errorData && typeof errorData === 'object' && 'type' in errorData) ? errorData.type : undefined;
+      const errorCode = (errorData && typeof errorData === 'object' && 'code' in errorData) ? errorData.code : `http_${status ?? 'unknown'}`;
+      const param = (errorData && typeof errorData === 'object' && 'param' in errorData) ? errorData.param : undefined;
+      const docUrl = (errorData && typeof errorData === 'object' && 'doc_url' in errorData) ? errorData.doc_url : undefined;
+      const declineCode = (errorData && typeof errorData === 'object' && 'decline_code' in errorData) ? errorData.decline_code : undefined;
+      const chargeId = (errorData && typeof errorData === 'object' && 'charge_id' in errorData) ? errorData.charge_id : undefined;
 
       return new MagpieError({
         message: errorMessage,
