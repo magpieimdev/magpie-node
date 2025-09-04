@@ -21,11 +21,6 @@ Thumbs.db
 .DS_Store
 Thumbs.db
 
-# Package manager files (keep one, ignore others)
-package-lock.json
-yarn.lock
-bun.lockb
-
 # Build outputs
 *.tsbuildinfo
 .nyc_output/
