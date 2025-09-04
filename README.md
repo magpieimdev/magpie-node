@@ -2,7 +2,7 @@
 
 The official Magpie Node.js library for seamless integration with Magpie's payment processing APIs. Built with TypeScript and designed for modern Node.js applications.
 
-[![npm version](https://badge.fury.io/js/%40magpieim%2Fmagpie-node.svg)](https://badge.fury.io/js/%40magpieim%2Fmagpie-node)
+[![npm version](https://badge.fury.io/js/@magpieim%2Fmagpie-node.svg)](https://badge.fury.io/js/@magpieim%2Fmagpie-node.svg)
 [![Version](https://img.shields.io/npm/v/@magpieim/magpie-node.svg)](https://www.npmjs.org/package/@magpieim/magpie-node)
 [![Build Status](https://github.com/magpieimdev/magpie-node/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/magpieimdev/magpie-node/actions?query=branch%3Amain)
 [![Downloads](https://img.shields.io/npm/dm/@magpieim/magpie-node.svg)](https://www.npmjs.com/package/@magpieim/magpie-node)
