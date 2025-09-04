@@ -4,7 +4,7 @@ The official Magpie Node.js library for seamless integration with Magpie's payme
 
 [![npm version](https://badge.fury.io/js/%40magpieim%2Fmagpie-node.svg)](https://badge.fury.io/js/%40magpieim%2Fmagpie-node)
 [![Version](https://img.shields.io/npm/v/@magpieim/magpie-node.svg)](https://www.npmjs.org/package/@magpieim/magpie-node)
-[![Build Status](https://github.com/flairlabs/magpie-node/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/flairlabs/magpie-node/actions?query=branch%3Amain)
+[![Build Status](https://github.com/magpieimdev/magpie-node/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/magpieimdev/magpie-node/actions?query=branch%3Amain)
 [![Downloads](https://img.shields.io/npm/dm/@magpieim/magpie-node.svg)](https://www.npmjs.com/package/@magpieim/magpie-node)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -145,6 +145,15 @@ const customer: Magpie.Customer = await magpie.customers.create({
 });
 ```
 
+## Maintainers
+
+This library is maintained by the Magpie team:
+
+- **Jerick Coneras** - [@donjerick](https://github.com/donjerick) - Lead Maintainer
+- **Magpie Team** - [support@magpie.im](mailto:support@magpie.im)
+
+For feature requests and enhancements, please [open an issue](https://github.com/magpieimdev/magpie-node/issues).
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -153,4 +162,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Documentation: [https://docs.magpie.im](https://docs.magpie.im)
 - Support: [support@magpie.im](mailto:support@magpie.im)
-- Issues: [GitHub Issues](https://github.com/flairlabs/magpie-node/issues)
+- Issues: [GitHub Issues](https://github.com/magpieimdev/magpie-node/issues)

@@ -4,23 +4,22 @@
   "description": "The Magpie API Library for NodeJS enables you to work with Magpie APIs.",
   "keywords": [
     "magpie",
-    "magpieim",
     "payment processing",
     "credit cards",
     "api",
     "nodejs"
   ],
-  "homepage": "https://github.com/flairlabs/magpie-node",
+  "homepage": "https://github.com/magpieimdev/magpie-node",
   "license": "MIT",
-  "author": "Stripe <support@magpie.im> (https://magpie.im/)",
+  "author": "Magpie <support@magpie.im> (https://magpie.im/)",
   "contributors": [
     "Jerick Coneras <jerick@magpie.im>"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/flairlabs/magpie-node.git"
+    "url": "https://github.com/magpieimdev/magpie-node.git"
   },
-  "bugs": "https://github.com/flairlabs/magpie-node/issues",
+  "bugs": "https://github.com/magpieimdev/magpie-node/issues",
   "engines": {
     "node": ">=18.0.0"
   },
