@@ -22,11 +22,10 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
     
-    # Use npm in CI for maximum reliability
+    # Use npm install in CI
     - name: Install dependencies
-      run: npm ci
+      run: npm install
     
     - name: Run linting
       run: npm run lint
@@ -52,7 +51,7 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
     
     - name: Install dependencies
-      run: npm ci
+      run: npm install
     
     # Extract version from GitHub release tag
     - name: Update package.json version
