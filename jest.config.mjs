@@ -3,15 +3,12 @@ export default {
   // Use ts-jest preset for TypeScript support
   preset: 'ts-jest',
   
-  // Test environment
-  testEnvironment: 'node',
   
   // Root directory for tests and modules
   rootDir: '.',
   
   // Test file patterns
   testMatch: [
-    '<rootDir>/src/**/__tests__/**/*.{ts,tsx}',
     '<rootDir>/src/**/*.{test,spec}.{ts,tsx}',
     '<rootDir>/test/**/*.{test,spec}.{ts,tsx}'
   ],
@@ -19,13 +16,9 @@ export default {
   // Source file extensions
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   
-  // Transform files with ts-jest
-  transform: {
-    '^.+\\.tsx?$': 'ts-jest',
-  },
   
   // Module paths and aliases
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   
@@ -60,16 +53,21 @@ export default {
   // Restore mocks after each test
   restoreMocks: true,
   
-  // Setup files (create these if you need global test setup)
-  // setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
+  // Setup files for global test configuration
+  setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts'],
   
   // Verbose output
   verbose: true,
   
-  // TypeScript configuration for ts-jest
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json',
-    },
+  // Test environment setup
+  testEnvironment: 'node',
+  
+  // TypeScript configuration for ts-jest  
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', {
+      tsconfig: {
+        types: ['jest', 'node']
+      }
+    }]
   },
 };

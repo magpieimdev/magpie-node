@@ -75,12 +75,33 @@ export default [
   
   // Test files - more relaxed rules
   {
-    files: ['**/*.test.ts', '**/*.spec.ts', 'test/**/*.ts'],
+    files: ['**/*.test.ts', '**/*.spec.ts', 'test/**/*.ts', 'src/__tests__/**/*.ts'],
+    languageOptions: {
+      globals: {
+        // Jest globals
+        describe: 'readonly',
+        it: 'readonly',
+        test: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        beforeAll: 'readonly',
+        afterEach: 'readonly',
+        afterAll: 'readonly',
+        jest: 'readonly',
+        // Node globals
+        process: 'readonly',
+        console: 'readonly',
+        Buffer: 'readonly',
+      },
+    },
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
       'no-console': 'off',
+      'no-undef': 'off', // Turn off no-undef since we have Jest globals
+      'camelcase': 'off', // Allow snake_case in test fixtures that match API responses
     },
   },
   
