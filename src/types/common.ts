@@ -100,10 +100,10 @@ export interface LineItem {
   amount: number;
 
   /** The description of the line item. */
-  description: string | null;
+  description?: string | null;
 
   /** The image of the line item. */
-  image: string | null;
+  image?: string | null;
 
   /** The quantity of the line item being purchased. */
   quantity: number;

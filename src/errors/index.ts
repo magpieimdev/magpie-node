@@ -426,3 +426,10 @@ export class MagpieError extends Error {
     return this.type === 'rate_limit_error';
   }
 }
+
+// Export specific error classes
+export { AuthenticationError } from './authentication-error';
+export { ValidationError } from './validation-error';
+export { NetworkError } from './network-error';
+export { RateLimitError } from './rate-limit-error';
+export { ConfigurationError } from './configuration-error';
