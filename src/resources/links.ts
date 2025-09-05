@@ -26,10 +26,6 @@ import { BaseResource } from "./base";
  *     description: 'Consultation Fee',
  *     quantity: 1
  *   }],
- *   after_completion: {
- *     type: 'redirect',
- *     redirect: { url: 'https://example.com/thanks' }
- *   }
  * });
  * 
  * // Share the payment link
@@ -60,6 +56,8 @@ export class PaymentLinksResource extends BaseResource {
    * @example
    * ```typescript
    * const paymentLink = await magpie.paymentLinks.create({
+   *   allow_adjustable_quantity: false,
+   *   internal_name: 'Website Design Service',
    *   line_items: [
    *     {
    *       amount: 100000, // PHP 1,000.00
@@ -68,12 +66,6 @@ export class PaymentLinksResource extends BaseResource {
    *       image: 'https://example.com/service.jpg'
    *     }
    *   ],
-   *   after_completion: {
-   *     type: 'redirect',
-   *     redirect: { url: 'https://example.com/thank-you' }
-   *   },
-   *   allow_promotion_codes: true,
-   *   billing_address_collection: 'auto'
    * });
    * 
    * console.log(paymentLink.url); // Share this URL with customers

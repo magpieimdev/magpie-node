@@ -27,7 +27,7 @@ import { BaseResource } from "./base";
  *     quantity: 1,
  *     image: 'https://example.com/product.jpg'
  *   }],
- *   success_url: 'https://example.com/success?session_id={CHECKOUT_SESSION_ID}',
+ *   success_url: 'https://example.com/success',
  *   cancel_url: 'https://example.com/cancel',
  *   customer_email: 'customer@example.com'
  * });
@@ -68,7 +68,7 @@ export class CheckoutSessionsResource extends BaseResource {
    *       quantity: 1
    *     }
    *   ],
-   *   success_url: 'https://example.com/success?session_id={CHECKOUT_SESSION_ID}',
+   *   success_url: 'https://example.com/success',
    *   cancel_url: 'https://example.com/cancel',
    *   customer_email: 'customer@example.com',
    *   expires_at: Math.floor(Date.now() / 1000) + 3600 // 1 hour from now
