@@ -4,6 +4,7 @@ import { ChargesResource } from "./resources/charges";
 import { CheckoutResource } from "./resources/checkout";
 import { CustomersResource } from "./resources/customers";
 import { PaymentLinksResource } from "./resources/links";
+import { OrganizationsResource } from "./resources/organizations";
 import { PaymentRequestsResource } from "./resources/requests";
 import { SourcesResource } from "./resources/sources";
 import { WebhooksResource } from "./resources/webhooks";
@@ -56,6 +57,9 @@ export class Magpie extends BaseClient {
   /** API resource for managing payment links */
   public paymentLinks: PaymentLinksResource;
   
+  /** API resource for managing organization information */
+  public organizations: OrganizationsResource;
+  
   /** API resource for managing webhooks */
   public webhooks: WebhooksResource;
 
@@ -88,6 +92,7 @@ export class Magpie extends BaseClient {
     this.checkout = new CheckoutResource(this);
     this.paymentRequests = new PaymentRequestsResource(this);
     this.paymentLinks = new PaymentLinksResource(this);
+    this.organizations = new OrganizationsResource(this);
     this.webhooks = new WebhooksResource();
   }
 }
@@ -122,12 +127,10 @@ export namespace Magpie {
   
   // Source types
   export type Source = MagpieNamespace.Source;
-  export type SourceCreateParams = MagpieNamespace.SourceCreateParams;
   export type SourceCard = MagpieNamespace.SourceCard;
   export type SourceBankAccount = MagpieNamespace.SourceBankAccount;
   export type SourceRedirect = MagpieNamespace.SourceRedirect;
   export type SourceOwner = MagpieNamespace.SourceOwner;
-  export type CardSourceCreateParams = MagpieNamespace.CardSourceCreateParams;
   export type SourceType = MagpieNamespace.SourceType;
 
   // Charge types
@@ -156,6 +159,14 @@ export namespace Magpie {
   export type PaymentLink = MagpieNamespace.PaymentLink;
   export type PaymentLinkCreateParams = MagpieNamespace.PaymentLinkCreateParams;
   export type PaymentLinkUpdateParams = MagpieNamespace.PaymentLinkUpdateParams;
+
+  // Organization types
+  export type Organization = MagpieNamespace.Organization;
+  export type OrganizationBranding = MagpieNamespace.OrganizationBranding;
+  export type PaymentMethodSettings = MagpieNamespace.PaymentMethodSettings;
+  export type PaymentMethodRate = MagpieNamespace.PaymentMethodRate;
+  export type PaymentGateway = MagpieNamespace.PaymentGateway;
+  export type PayoutSettings = MagpieNamespace.PayoutSettings;
 
   // Webhook types
   export type WebhookEvent<T = unknown> = MagpieNamespace.WebhookEvent<T>;

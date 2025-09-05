@@ -510,7 +510,59 @@ export class BaseClient {
     this.config.debug = debug;
   }
 
-  // Test the connection
+  /**
+   * Updates the API key used for authentication.
+   * 
+   * This method allows switching between different API keys (e.g., from secret key
+   * to public key) for specific requests. The key validation ensures only valid
+   * Magpie API keys are accepted.
+   * 
+   * @param apiKey - New API key (must start with 'sk_' or 'pk_')
+   * 
+   * @throws {Error} When apiKey is missing, invalid, or malformed
+   * 
+   * @example
+   * ```typescript
+   * // Switch to public key for sources operations
+   * client.setApiKey('pk_test_123');
+   * 
+   * // Switch back to secret key
+   * client.setApiKey('sk_test_456');
+   * ```
+   */
+  public setApiKey(apiKey: string): void {
+    if (!apiKey || typeof apiKey !== 'string') {
+      throw new Error('Missing or invalid API key');
+    }
+
+    if (!apiKey.startsWith('sk_') && !apiKey.startsWith('pk_')) {
+      throw new Error('Invalid API key - must start with sk_ or pk_');
+    }
+
+    this.secretKey = apiKey;
+    
+    // Update the Axios instance with the new authentication
+    this.http.defaults.auth = {
+      username: apiKey,
+      password: '',
+    };
+  }
+
+  /**
+   * Gets the currently configured API key.
+   * 
+   * @returns The current API key (secret or public)
+   * 
+   * @example
+   * ```typescript
+   * const currentKey = client.getApiKey();
+   * console.log(currentKey.startsWith('sk_') ? 'Secret Key' : 'Public Key');
+   * ```
+   */
+  public getApiKey(): string {
+    return this.secretKey;
+  }
+
   /**
    * Tests connectivity to the Magpie API.
    * 

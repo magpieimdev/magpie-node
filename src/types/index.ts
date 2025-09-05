@@ -6,6 +6,7 @@ import type * as CommonTypes from './common';
 import type * as CustomerTypes from './customer';
 import type * as PaymentLinkTypes from './link';
 import type * as MagpieTypes from './magpie';
+import type * as OrganizationTypes from './organization';
 import type * as RefundTypes from './refund';
 import type * as PaymentRequestTypes from './request';
 import type * as CheckoutSessionTypes from './session';
@@ -42,12 +43,10 @@ export namespace Magpie {
 
   // Source types
   export type Source = SourceTypes.Source;
-  export type SourceCreateParams = SourceTypes.SourceCreateParams;
   export type SourceCard = SourceTypes.SourceCard;
   export type SourceBankAccount = SourceTypes.SourceBankAccount;
   export type SourceRedirect = SourceTypes.SourceRedirect;
   export type SourceOwner = SourceTypes.SourceOwner;
-  export type CardSourceCreateParams = SourceTypes.CardSourceCreateParams;
   export type SourceType = SourceTypes.SourceType;
 
   // Charge types
@@ -77,6 +76,14 @@ export namespace Magpie {
   export type PaymentLinkCreateParams = PaymentLinkTypes.PaymentLinkCreateParams;
   export type PaymentLinkUpdateParams = PaymentLinkTypes.PaymentLinkUpdateParams;
 
+  // Organization types
+  export type Organization = OrganizationTypes.Organization;
+  export type OrganizationBranding = OrganizationTypes.OrganizationBranding;
+  export type PaymentMethodSettings = OrganizationTypes.PaymentMethodSettings;
+  export type PaymentMethodRate = OrganizationTypes.PaymentMethodRate;
+  export type PaymentGateway = OrganizationTypes.PaymentGateway;
+  export type PayoutSettings = OrganizationTypes.PayoutSettings;
+
   // Webhook types
   export type WebhookEvent<T = unknown> = WebhookTypes.WebhookEvent<T>;
   export type WebhookEndpoint = WebhookTypes.WebhookEndpoint;
@@ -94,6 +101,7 @@ export * from './common';
 export * from './customer';
 export * from './link';
 export * from './magpie';
+export * from './organization';
 export * from './refund';
 export * from './request';
 export * from './session';
