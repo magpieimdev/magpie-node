@@ -22,6 +22,9 @@ export interface LastRequest {
  */
 interface SpyableMagpie extends Magpie {
   LAST_REQUEST: LastRequest | null;
+  REQUESTS: LastRequest[];
+  mockRequest(method: string, url: string, responseData: any, status?: number, headers?: Record<string, string>): void;
+  mockNetworkError(method: string, url: string): void;
 }
 
 /**
@@ -39,6 +42,22 @@ export function getSpyableMagpie(
   
   // Initialize the LAST_REQUEST tracker
   magpie.LAST_REQUEST = null;
+  magpie.REQUESTS = [];
+  
+  // Store mock responses and errors
+  const mockResponses: Map<string, { data: any; status: number; headers: Record<string, string> }> = new Map();
+  const mockErrors: Map<string, Error> = new Map();
+  
+  // Add mock methods
+  magpie.mockRequest = (method: string, url: string, responseData: any, status = 200, headers = {}) => {
+    const key = `${method.toUpperCase()}:${url}`;
+    mockResponses.set(key, { data: responseData, status, headers });
+  };
+  
+  magpie.mockNetworkError = (method: string, url: string) => {
+    const key = `${method.toUpperCase()}:${url}`;
+    mockErrors.set(key, new Error('Network Error'));
+  };
   
   // Mock the HTTP client to capture requests
   (magpie as any).http.request = jest.fn().mockImplementation((requestConfig: AxiosRequestConfig) => {
@@ -89,7 +108,7 @@ export function getSpyableMagpie(
     };
 
     // Capture request details
-    magpie.LAST_REQUEST = {
+    const requestDetails = {
       method: requestConfig.method?.toUpperCase() ?? 'GET',
       url: requestConfig.url ?? '',
       data: requestConfig.data,
@@ -103,17 +122,52 @@ export function getSpyableMagpie(
       }
     };
     
-    // Return a mock successful response
-    const mockResponse: AxiosResponse = {
+    magpie.LAST_REQUEST = requestDetails;
+    magpie.REQUESTS.push(requestDetails);
+    
+    // Check for mock responses and errors
+    const key = `${requestDetails.method}:${requestDetails.url}`;
+    
+    // Check for network error first
+    if (mockErrors.has(key)) {
+      const error = mockErrors.get(key);
+      return Promise.reject(error ?? new Error('Network Error'));
+    }
+    
+    // Check for custom mock response
+    if (mockResponses.has(key)) {
+      const mockConfig = mockResponses.get(key)!;
+      const mockResponse: AxiosResponse = {
+        data: mockConfig.data,
+        status: mockConfig.status,
+        statusText: mockConfig.status >= 400 ? 'Error' : 'OK',
+        headers: { 'request-id': 'req_test_123', ...mockConfig.headers },
+        config: requestConfig as any,
+        request: {}
+      };
+      
+      // Throw error for 4xx and 5xx status codes
+      if (mockConfig.status >= 400) {
+        const error = new Error(`HTTP ${mockConfig.status} Error`) as any;
+        error.response = mockResponse;
+        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+        return Promise.reject(error);
+      }
+      
+      return Promise.resolve(mockResponse);
+    }
+    
+    // Return default mock response
+    const defaultResponse: AxiosResponse = {
       data: { id: 'mock_response', object: 'test' },
       status: 200,
       statusText: 'OK',
-      headers: {},
+      headers: { 'request-id': 'req_default_123' },
       config: requestConfig as any,
       request: {}
     };
     
-    return Promise.resolve(mockResponse);
+    return Promise.resolve(defaultResponse);
   });
   
   return magpie;
@@ -259,29 +313,6 @@ export function createTestCharge(overrides: Record<string, any> = {}): Record<st
   };
 }
 
-/**
- * Utility to create test source data
- */
-export function createTestSource(overrides: Record<string, any> = {}): Record<string, any> {
-  return {
-    type: 'card',
-    card: {
-      number: '4242424242424242',
-      exp_month: 12,
-      exp_year: 2025,
-      cvc: '123'
-    },
-    redirect: {
-      success: 'https://example.com/success',
-      fail: 'https://example.com/fail'
-    },
-    billing: {
-      name: 'Test User',
-      email: 'test@example.com'
-    },
-    ...overrides
-  };
-}
 
 /**
  * Utility to create test line item data
@@ -413,6 +444,82 @@ export function createTestWebhookHeaders(signature: string, timestamp?: number, 
   }
 
   return headers;
+}
+
+/**
+ * Utility to create test organization data
+ */
+export function createTestOrganization(overrides: Record<string, any> = {}): Record<string, any> {
+  return {
+    object: 'organization',
+    id: `org_test_${getRandomString()}`,
+    title: 'Test Organization',
+    account_name: 'Test Org Account',
+    statement_descriptor: 'TEST_ORG',
+    pk_test_key: `pk_test_${getRandomString()}`,
+    sk_test_key: `sk_test_${getRandomString()}`,
+    pk_live_key: `pk_live_${getRandomString()}`,
+    sk_live_key: `sk_live_${getRandomString()}`,
+    branding: {
+      icon: 'https://example.com/icon.png',
+      logo: null,
+      use_logo: false,
+      brand_color: '#fffefd',
+      accent_color: '#1a3da6'
+    },
+    status: 'approved',
+    created_at: '2021-08-15T23:13:11.682944+08:00',
+    updated_at: '2025-09-05T11:35:51.957059+08:00',
+    business_address: null,
+    payment_method_settings: {
+      card: {
+        mid: null,
+        gateway: {
+          id: 'default',
+          name: 'Magpie Gateway'
+        },
+        rate: {
+          mdr: 0.029,
+          fixed_fee: 1000,
+          formula: 'mdr_plus_fixed'
+        },
+        status: 'approved'
+      },
+      gcash: {
+        mid: '217020000038029496672',
+        gateway: null,
+        rate: {
+          mdr: 0.022,
+          fixed_fee: 0,
+          formula: 'mdr_plus_fixed'
+        },
+        status: 'approved'
+      }
+    },
+    rates: {
+      card: {
+        mdr: 0.029,
+        fixed_fee: 1000
+      },
+      gcash: {
+        mdr: 0.022,
+        fixed_fee: 0
+      }
+    },
+    payout_settings: {
+      schedule: 'automatic',
+      delivery_type: 'standard',
+      bank_code: 'BPI/BPI Family Savings Bank',
+      account_number: '3259442965',
+      account_name: 'Test Account'
+    },
+    metadata: {
+      business_website: 'https://test.com',
+      support_phone: '917 513 4281',
+      support_email: 'support@test.com'
+    },
+    ...overrides
+  };
 }
 
 /**
