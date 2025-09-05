@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-09-05
+
+### Added
+
+- **Organization Resource** - New resource for retrieving organization information including branding, payment method settings, and payout configurations
+- **createTestOrganization()** utility function for testing with realistic organization data
+- **Organization Types** - Complete TypeScript definitions for Organization, OrganizationBranding, PaymentMethodSettings, PaymentGateway, PaymentMethodRate, and PayoutSettings
+
+### Changed
+
+- **BREAKING: SourcesResource** - Removed `create()` method as sources should only be created client-side for security
+- **SourcesResource Authentication** - Implemented lazy public key (PK) authentication that automatically switches from secret key to public key when retrieving sources
+- **BaseClient** - Added `setApiKey()` and `getApiKey()` methods for dynamic API key switching
+- **Enhanced Test Utilities** - Extended SpyableMagpie with `mockRequest()` and `mockNetworkError()` methods for better test coverage
+
+### Fixed
+
+- **Sources Security** - Sources now correctly use public key authentication as required by the API
+- **Test Coverage** - Updated sources tests to remove create method tests and add PK authentication tests
+
+### Technical Improvements
+
+- Lazy authentication switching prevents unnecessary HTTP calls during SDK initialization
+- Public key caching eliminates redundant organization API calls
+- Enhanced mock testing infrastructure with request tracking and custom response handling
+
 ## [1.0.0] - 2025-09-04
 
 ### Added
