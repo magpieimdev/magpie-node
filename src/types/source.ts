@@ -55,66 +55,6 @@ export interface SourceOwner {
   shipping?: Shipping;
 }
 
-/**
- * Parameters for creating a card payment source.
- * 
- * Card sources represent credit or debit cards that can be used
- * for payments. All card information is tokenized for security.
- */
-export interface CardSourceCreateParams {
-  /** The name of the card holder. */
-  name: string;
-
-  /** The card number. */
-  number: string;
-
-  /** The card expiration month. */
-  exp_month: string;
-
-  /** The card expiration year. */
-  exp_year: string;
-
-  /** The card security code. */
-  cvc: string;
-
-  /** The card billing address line 1. */
-  address_line1?: string;
-
-  /** The card billing address line 2. */
-  address_line2?: string;
-
-  /** The card billing address city. */
-  address_city?: string;
-
-  /** The card billing address state. */
-  address_state?: string;
-
-  /** The card billing address country. */
-  address_country?: string;
-
-  /** The card billing address zip code. */
-  address_zip?: string;
-}
-
-/**
- * Parameters for creating a payment source.
- * 
- * Payment sources represent different payment methods that can be used
- * for payments. All payment information is tokenized for security.
- */
-export interface SourceCreateParams {
-  /** The type of the source. */
-  type: SourceType;
-
-  /** The details of the card, if source type is card. */
-  card?: CardSourceCreateParams;
-
-  /** The payment redirect params. */
-  redirect: SourceRedirect;
-
-  /** The owner details. */
-  owner?: SourceOwner;
-}
 
 /**
  * A card object represents a credit or debit card payment source type.
