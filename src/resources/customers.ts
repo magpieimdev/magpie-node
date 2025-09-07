@@ -36,7 +36,7 @@ export class CustomersResource extends BaseResource {
    * @param client - The BaseClient instance for API communication
    */
   constructor(client: BaseClient) {
-    super(client, '/customers');
+    super(client, '/customers/');
   }
 
   /**
@@ -113,7 +113,8 @@ export class CustomersResource extends BaseResource {
     email: string,
     options: RequestOptions = {},
   ): Promise<Customer & { lastResponse: LastResponse }> {
-    return this.customResourceAction<Customer>('GET', `${this.buildPath()}/email`, { email }, options);
+    const basePath = this.basePath.endsWith('/') ? this.basePath.slice(0, -1) : this.basePath;
+    return this.customResourceAction<Customer>('GET', `${basePath}/by_email/${email}`, undefined, options);
   }
 
   /**

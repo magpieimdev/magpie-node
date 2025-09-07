@@ -52,7 +52,9 @@ export abstract class BaseResource {
       return id;
     }
     
-    return `${this.basePath}/${id}`;
+    // Handle trailing slash to avoid double slashes
+    const path = this.basePath.endsWith('/') ? this.basePath.slice(0, -1) : this.basePath;
+    return `${path}/${id}`;
   }
 
   /**
