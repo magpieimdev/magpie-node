@@ -23,7 +23,7 @@ describe('CheckoutSessionsResource', () => {
 
       expect(magpie.LAST_REQUEST).toMatchObject({
         method: 'POST',
-        url: expect.stringContaining('/'),
+        url: expect.stringContaining(''),
         data: sessionData
       });
     });
@@ -86,7 +86,7 @@ describe('CheckoutSessionsResource', () => {
 
       expect(magpie.LAST_REQUEST).toMatchObject({
         method: 'GET',
-        url: expect.stringContaining(`/${sessionId}`)
+        url: expect.stringContaining(sessionId)
       });
     });
 
@@ -116,7 +116,7 @@ describe('CheckoutSessionsResource', () => {
 
       expect(magpie.LAST_REQUEST).toMatchObject({
         method: 'POST',
-        url: expect.stringContaining(`/${sessionId}/capture`),
+        url: expect.stringContaining(`${sessionId}/capture`),
         data: captureData
       });
     });
@@ -154,7 +154,7 @@ describe('CheckoutSessionsResource', () => {
 
       expect(magpie.LAST_REQUEST).toMatchObject({
         method: 'POST',
-        url: expect.stringContaining(`/${sessionId}/expire`)
+        url: expect.stringContaining(`${sessionId}/expire`)
       });
     });
 

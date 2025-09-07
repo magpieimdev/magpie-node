@@ -43,7 +43,16 @@ export abstract class BaseResource {
    * @protected
    */
   protected buildPath(id?: string): string {
-    return id ? `${this.basePath}/${id}` : this.basePath;
+    if (!id) {
+      return this.basePath;
+    }
+    
+    // Handle empty basePath (used for resources with custom base URLs)
+    if (this.basePath === '') {
+      return id;
+    }
+    
+    return `${this.basePath}/${id}`;
   }
 
   /**
