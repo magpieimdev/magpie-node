@@ -42,7 +42,7 @@ export class ChargesResource extends BaseResource {
    * @param client - The BaseClient instance for API communication
    */
   constructor(client: BaseClient) {
-    super(client, '/charges');
+    super(client, '/charges/');
   }
 
   /**

@@ -40,7 +40,7 @@ export class SourcesResource extends BaseResource {
    * @param client - The BaseClient instance for API communication
    */
   constructor(client: BaseClient) {
-    super(client, '/sources');
+    super(client, '/sources/');
   }
 
   /**

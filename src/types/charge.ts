@@ -190,6 +190,9 @@ export interface Charge {
   /** The list of refunds for the charge. */
   refunds: Refund[];
 
+  /** The status of the charge. */
+  status: ChargeStatus;
+
   /** Whether the charge is in live mode. */
   livemode: boolean;
 
