@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2025-09-07
+
+### Fixed
+
+- **Axios Retry Logic Error** - Fixed `Cannot read properties of undefined (reading '_retryCount')` error that occurred when axios errors don't have a config object during retry attempts
+- **Test Stability** - Resolved flaky webhook timestamp validation tests that caused intermittent CI failures by calculating timestamps individually per test
+- **Error Handling** - Added proper null checks in HTTP client response interceptor and shouldRetry method
+
+### Technical Improvements
+
+- Enhanced error handling test coverage with regression tests for axios error scenarios
+- Improved CI reliability by eliminating race conditions in timing-sensitive tests
+- Added null safety checks throughout HTTP client retry logic
+
+## [1.1.1] - 2025-09-07
+
+### Fixed
+
+- **CheckoutSessions Base URL** - Corrected CheckoutSessions base URL from `https://new.pay.magpie.im` to `https://api.pay.magpie.im`
+- **API Resolution** - Resolved CheckoutSession API call failures for create, retrieve, capture, and expire operations
+
+### Changed
+
+- Updated CheckoutSessionsResource constructor to use correct API endpoint
+- Updated corresponding test expectations for base URL validation
+
 ## [1.1.0] - 2025-09-05
 
 ### Added
