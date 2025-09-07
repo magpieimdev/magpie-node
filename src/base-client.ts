@@ -188,12 +188,12 @@ export class BaseClient {
             status: error.response?.status,
             message: error.message,
             code: error.code,
-            retryCount: originalRequest._retryCount ?? 0,
+            retryCount: originalRequest?._retryCount ?? 0,
           })
         }
 
-        // Handle retry logic
-        if (this.shouldRetry(error, originalRequest)) {
+        // Handle retry logic - only if originalRequest exists
+        if (originalRequest && this.shouldRetry(error, originalRequest)) {
           originalRequest._retryCount = (originalRequest._retryCount ?? 0) + 1;
 
           const delay = this.calculateRetryDelay(originalRequest._retryCount);
@@ -216,6 +216,11 @@ export class BaseClient {
     error: AxiosError,
     request: InternalAxiosRequestConfig & { _retryCount?: number; _retryable?: boolean; }
   ): boolean {
+    // Don't retry if request is null/undefined
+    if (!request) {
+      return false;
+    }
+
     // Don't retry if we've hit the max retries
     if ((request._retryCount ?? 0) >= this.config.maxRetries) {
       return false;

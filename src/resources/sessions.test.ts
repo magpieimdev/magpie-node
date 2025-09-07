@@ -358,4 +358,20 @@ describe('CheckoutSessionsResource', () => {
       expect((magpie.LAST_REQUEST?.data as any).payment_method_types).toEqual(['gcash']);
     });
   });
+
+  describe('Error Handling', () => {
+    it('should handle axios errors without config properly', async () => {
+      const sessionId = 'cs_test_123';
+      
+      // Mock axios to throw an error without config
+      const axiosError = new Error('Network Error') as any;
+      axiosError.code = 'ECONNRESET';
+      axiosError.config = undefined; // This simulates the problematic case
+      
+      jest.spyOn(magpie.checkout.sessions['client']['http'], 'request')
+        .mockRejectedValueOnce(axiosError);
+
+      await expect(magpie.checkout.sessions.retrieve(sessionId)).rejects.toThrow();
+    });
+  });
 });
