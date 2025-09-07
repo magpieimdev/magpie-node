@@ -44,7 +44,7 @@ export class CheckoutSessionsResource extends BaseResource {
    */
   constructor(client: BaseClient) {
     // Use different base URL for checkout sessions
-    super(client, '/', 'https://new.pay.magpie.im');
+    super(client, '/', 'https://api.pay.magpie.im');
   }
 
   /**

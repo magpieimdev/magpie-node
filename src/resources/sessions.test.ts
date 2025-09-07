@@ -74,7 +74,7 @@ describe('CheckoutSessionsResource', () => {
 
       await magpie.checkout.sessions.create(sessionData as any);
 
-      expect(magpie.LAST_REQUEST?.config?.baseURL).toBe('https://new.pay.magpie.im');
+      expect(magpie.LAST_REQUEST?.config?.baseURL).toBe('https://api.pay.magpie.im');
     });
   });
 
@@ -103,7 +103,7 @@ describe('CheckoutSessionsResource', () => {
 
       await magpie.checkout.sessions.retrieve(sessionId);
 
-      expect(magpie.LAST_REQUEST?.config?.baseURL).toBe('https://new.pay.magpie.im');
+      expect(magpie.LAST_REQUEST?.config?.baseURL).toBe('https://api.pay.magpie.im');
     });
   });
 
