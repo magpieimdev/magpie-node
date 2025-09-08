@@ -1,3 +1,4 @@
+import { Source } from "./source";
 
 /**
  * Parameters for creating a new customer.
@@ -10,7 +11,7 @@ export interface CustomerCreateParams {
   email: string;
 
   /** An arbitrary string that you can attach to a customer object. */
-  description?: string;
+  description: string;
 
   /** The customer’s full name or business name. */
   name?: string;
@@ -64,6 +65,9 @@ export interface Customer {
   /** An arbitrary string attached to the object. */
   description: string;
 
+  /** The customer's full name or business name. */
+  name?: string;
+
   /** The customer's mobile number */
   mobile_number: string | null;
 
@@ -81,5 +85,5 @@ export interface Customer {
   metadata: Record<string, any>;
 
   /** Array of source objects attached to the customer */
-  // sources: // Array of source objects
+  sources: Source[];
 }

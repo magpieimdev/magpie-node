@@ -61,7 +61,27 @@ export class CustomersResource extends BaseResource {
     params: CustomerCreateParams,
     options: RequestOptions = {},
   ): Promise<Customer & { lastResponse: LastResponse }> {
-    return this.createResource<Customer, CustomerCreateParams>(params, options);
+    const { name, ...restParams } = params;
+    
+    // Move name to metadata for API compatibility, ensuring no duplicates
+    const existingMetadata = { ...params.metadata };
+    if (name !== undefined) {
+      existingMetadata.name = name;
+    }
+    
+    const apiParams = {
+      ...restParams,
+      metadata: existingMetadata
+    };
+
+    const result = await this.createResource<Customer, typeof apiParams>(apiParams, options);
+    
+    // Extract name from metadata and add to response
+    if (result.metadata?.name) {
+      (result as Customer & { lastResponse: LastResponse }).name = result.metadata.name as string;
+    }
+    
+    return result;
   }
 
   /**
@@ -76,7 +96,14 @@ export class CustomersResource extends BaseResource {
     id: string,
     options: RequestOptions = {},
   ): Promise<Customer & { lastResponse: LastResponse }> {
-    return this.retrieveResource<Customer>(id, options);
+    const result = await this.retrieveResource<Customer>(id, options);
+    
+    // Extract name from metadata and add to response
+    if (result.metadata?.name) {
+      (result as Customer & { lastResponse: LastResponse }).name = result.metadata.name as string;
+    }
+    
+    return result;
   }
 
   /**
@@ -93,7 +120,27 @@ export class CustomersResource extends BaseResource {
     params: CustomerUpdateParams,
     options: RequestOptions = {},
   ): Promise<Customer & { lastResponse: LastResponse }> {
-    return this.updateResource<Customer, CustomerUpdateParams>(id, params, options);
+    const { name, ...restParams } = params;
+    
+    // Move name to metadata for API compatibility, ensuring no duplicates
+    const existingMetadata = { ...params.metadata };
+    if (name !== undefined) {
+      existingMetadata.name = name;
+    }
+    
+    const apiParams = {
+      ...restParams,
+      metadata: existingMetadata
+    };
+
+    const result = await this.updateResource<Customer, typeof apiParams>(id, apiParams, options);
+    
+    // Extract name from metadata and add to response
+    if (result.metadata?.name) {
+      (result as Customer & { lastResponse: LastResponse }).name = result.metadata.name as string;
+    }
+    
+    return result;
   }
 
   /**
@@ -114,7 +161,14 @@ export class CustomersResource extends BaseResource {
     options: RequestOptions = {},
   ): Promise<Customer & { lastResponse: LastResponse }> {
     const basePath = this.basePath.endsWith('/') ? this.basePath.slice(0, -1) : this.basePath;
-    return this.customResourceAction<Customer>('GET', `${basePath}/by_email/${email}`, undefined, options);
+    const result = await this.customResourceAction<Customer>('GET', `${basePath}/by_email/${email}`, undefined, options);
+    
+    // Extract name from metadata and add to response
+    if (result.metadata?.name) {
+      (result as Customer & { lastResponse: LastResponse }).name = result.metadata.name as string;
+    }
+    
+    return result;
   }
 
   /**

@@ -47,7 +47,7 @@ describe('BaseClient', () => {
       const magpie = getSpyableMagpie('sk_test_123');
       
       // Make a test request
-      await magpie.customers.create({ email: 'test@example.com' });
+      await magpie.customers.create({ email: 'test@example.com', description: 'Test customer' });
       
       // Basic auth encodes username:password in base64. Since password is empty, it's just 'sk_test_123:'
       const expectedAuth = `Basic ${Buffer.from('sk_test_123:').toString('base64')}`;
@@ -61,7 +61,8 @@ describe('BaseClient', () => {
       
       await magpie.customers.create({
         name: 'Test Customer',
-        email: 'test@example.com'
+        email: 'test@example.com',
+        description: 'Test customer'
       });
       
       expect(magpie.LAST_REQUEST?.headers).toMatchObject({
@@ -72,7 +73,7 @@ describe('BaseClient', () => {
     it('should include User-Agent header', async () => {
       const magpie = getSpyableMagpie('sk_test_123');
       
-      await magpie.customers.create({ email: 'test@example.com' });
+      await magpie.customers.create({ email: 'test@example.com', description: 'Test customer' });
       
       expect(magpie.LAST_REQUEST?.headers?.['User-Agent']).toMatch(/^magpie-node\/\d+\.\d+\.\d+/);
     });
@@ -256,7 +257,7 @@ describe('BaseClient', () => {
     it('should use default timeout', async () => {
       const magpie = getSpyableMagpie('sk_test_123');
       
-      await magpie.customers.create({ email: 'test@example.com' });
+      await magpie.customers.create({ email: 'test@example.com', description: 'Test customer' });
       
       // Check that timeout is set in the request config
       expect(magpie.LAST_REQUEST?.config?.timeout).toBeDefined();
@@ -265,7 +266,7 @@ describe('BaseClient', () => {
     it('should use custom timeout', async () => {
       const magpie = getSpyableMagpie('sk_test_123', { timeout: 15000 });
       
-      await magpie.customers.create({ email: 'test@example.com' });
+      await magpie.customers.create({ email: 'test@example.com', description: 'Test customer' });
       
       expect(magpie.LAST_REQUEST?.config?.timeout).toBe(15000);
     });
@@ -274,7 +275,7 @@ describe('BaseClient', () => {
       const customUrl = 'https://api.custom.magpie.im';
       const magpie = getSpyableMagpie('sk_test_123', { baseUrl: customUrl });
       
-      await magpie.customers.create({ email: 'test@example.com' });
+      await magpie.customers.create({ email: 'test@example.com', description: 'Test customer' });
       
       expect(magpie.LAST_REQUEST?.config?.baseURL).toBe(`${customUrl}/v2`);
     });
