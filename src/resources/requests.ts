@@ -158,6 +158,13 @@ export class PaymentRequestsResource extends BaseResource {
     params: PaymentRequestVoidParams,
     options: RequestOptions = {},
   ): Promise<PaymentRequest & { lastResponse: LastResponse }> {
-    return this.customResourceAction<PaymentRequest>('POST', `${this.buildPath(id)}/void`, params, options);
+    const response = await this.customResourceAction<{ message: string; data: PaymentRequest }>('POST', `${this.buildPath(id)}/void`, params, options);
+    
+    // The void endpoint returns a nested response with the payment request in the 'data' property
+    // We need to extract it to maintain consistency with other endpoints
+    return {
+      ...response.data,
+      lastResponse: response.lastResponse
+    } as PaymentRequest & { lastResponse: LastResponse };
   }
 }
