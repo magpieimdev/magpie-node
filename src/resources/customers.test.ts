@@ -106,15 +106,14 @@ describe('CustomersResource', () => {
   });
 
   describe('retrieveByEmail', () => {
-    it('should send GET request to /customers/email with email parameter', async () => {
+    it('should send GET request to /customers/by_email/:email endpoint', async () => {
       const email = 'test@example.com';
       
       await magpie.customers.retrieveByEmail(email);
       
       expect(magpie.LAST_REQUEST).toMatchObject({
         method: 'GET',
-        url: expect.stringContaining('/customers/email'),
-        params: { email }
+        url: expect.stringContaining('/customers/by_email/test@example.com')
       });
     });
   });
