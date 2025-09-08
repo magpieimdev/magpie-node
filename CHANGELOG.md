@@ -5,6 +5,63 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2025-09-08
+
+### Fixed
+
+- **Customer API Alignment** - Made `description` field required in `CustomerCreateParams` to match API requirements
+- **Customer Type Definitions** - Added missing `name` field to Customer interface for better type safety
+- **Customer Sources** - Properly typed `sources` field as `Source[]` array with correct import
+
+### Enhanced
+
+- **Customer Name Handling** - Implemented automatic name to metadata mapping for API compatibility while preserving backward compatibility
+- **Metadata Preservation** - Enhanced metadata handling to preserve existing metadata when adding name field
+- **Response Processing** - Added name extraction from metadata in all Customer response methods (create, retrieve, update, retrieveByEmail)
+- **Test Coverage** - Added comprehensive test suite covering name handling edge cases and metadata preservation
+
+### Technical Improvements
+
+- Updated all test cases to include required description field
+- Enhanced Customer resource implementation with robust name-to-metadata transformation
+- Improved type safety across Customer-related operations
+- Maintained full backward compatibility for existing Customer API usage
+
+## [1.2.0] - 2025-09-08
+
+### Added
+
+- **Charge Status Property** - Added `status` property to Charge interface for better charge state tracking
+
+### Fixed
+
+- **Customer API Endpoints** - Resolved customer API endpoint URL issues and improved path handling
+- **Customer Tests** - Updated customers test to match correct `retrieveByEmail` endpoint
+- **Payment Request Response** - Normalized payment request void response structure for consistency
+- **Charge Endpoint URLs** - Fixed endpoint URLs for charge operations
+
+### Removed
+
+- **BREAKING: Charge Verify Functionality** - Removed `verify()` method from ChargesResource for security reasons
+- **ChargeVerifyParams Interface** - Removed all charge verification related types and documentation
+
+### Security
+
+- Eliminated charge verification functionality to prevent potential security vulnerabilities
+
+## [1.1.3] - 2025-09-07
+
+### Fixed
+
+- **CheckoutSessions URL Construction** - Fixed Invalid URL error in CheckoutSessions endpoints
+- **Base Path Handling** - Resolved URL construction creating double slashes in API endpoints (e.g., `https://api.pay.magpie.im//cs_123`)
+- **Sessions Resource** - Updated CheckoutSessions resource to prevent malformed URLs
+
+### Technical Improvements
+
+- Enhanced base resource URL handling to normalize path construction
+- Updated session tests to reflect correct URL patterns
+
 ## [1.1.2] - 2025-09-07
 
 ### Fixed
