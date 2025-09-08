@@ -134,50 +134,6 @@ describe('ChargesResource', () => {
     });
   });
 
-  describe('verify', () => {
-    it('should send POST request to /charges/:id/verify', async () => {
-      const chargeId = 'ch_test_123';
-      const verifyData = {
-        confirmation_id: '1234567890',
-        otp: '123456'
-      };
-      
-      await magpie.charges.verify(chargeId, verifyData);
-      
-      expect(magpie.LAST_REQUEST).toMatchObject({
-        method: 'POST',
-        url: expect.stringContaining(`/charges/${chargeId}/verify`),
-        data: verifyData
-      });
-    });
-
-    it('should handle verification with confirmation_id and otp', async () => {
-      const chargeId = 'ch_test_123';
-      const verifyData = {
-        confirmation_id: '9876543210',
-        otp: '654321'
-      };
-      
-      await magpie.charges.verify(chargeId, verifyData);
-      
-      expect(magpie.LAST_REQUEST?.data).toEqual(verifyData);
-    });
-
-    it('should handle verification with additional metadata', async () => {
-      const chargeId = 'ch_test_123';
-      const verifyData = {
-        confirmation_id: '1234567890',
-        otp: '123456',
-        metadata: {
-          verification_source: 'mobile_app'
-        }
-      };
-      
-      await magpie.charges.verify(chargeId, verifyData);
-      
-      expect(magpie.LAST_REQUEST?.data).toEqual(verifyData);
-    });
-  });
 
   describe('void', () => {
     it('should send POST request to /charges/:id/void', async () => {

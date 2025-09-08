@@ -127,19 +127,6 @@ export interface ChargeCaptureParams {
   amount: number;
 }
 
-/**
- * Parameters for verifying a charge that requires additional authentication.
- * 
- * Some payment methods (like direct bank payments) require additional
- * verification steps such as OTP confirmation.
- */
-export interface ChargeVerifyParams {
-  /** The confirmation ID from the provider. */
-  confirmation_id: string;
-
-  /** The OTP code from the provider. */
-  otp: string;
-}
 
 /**
  * A charge represents a payment transaction.

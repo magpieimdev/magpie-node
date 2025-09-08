@@ -53,7 +53,6 @@ export namespace Magpie {
   export type Charge = ChargeTypes.Charge;
   export type ChargeCreateParams = ChargeTypes.ChargeCreateParams;
   export type ChargeCaptureParams = ChargeTypes.ChargeCaptureParams;
-  export type ChargeVerifyParams = ChargeTypes.ChargeVerifyParams;
   export type ChargeAction = ChargeTypes.ChargeAction;
   export type ChargeFailure = ChargeTypes.ChargeFailure;
 

@@ -137,7 +137,6 @@ export namespace Magpie {
   export type Charge = MagpieNamespace.Charge;
   export type ChargeCreateParams = MagpieNamespace.ChargeCreateParams;
   export type ChargeCaptureParams = MagpieNamespace.ChargeCaptureParams;
-  export type ChargeVerifyParams = MagpieNamespace.ChargeVerifyParams;
   export type ChargeAction = MagpieNamespace.ChargeAction;
   export type ChargeFailure = MagpieNamespace.ChargeFailure;
 

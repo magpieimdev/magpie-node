@@ -3,7 +3,6 @@ import {
   Charge,
   ChargeCaptureParams,
   ChargeCreateParams,
-  ChargeVerifyParams,
   LastResponse,
   RefundCreateParams,
   RequestOptions,
@@ -15,7 +14,7 @@ import { BaseResource } from "./base";
  * 
  * The ChargesResource provides methods to create, retrieve, and manipulate charges
  * in the Magpie payment system. This includes creating new charges, capturing
- * authorized payments, processing refunds, and verifying payment authenticity.
+ * authorized payments, voiding authorizations, and processing refunds.
  * 
  * @example
  * ```typescript
@@ -140,33 +139,6 @@ export class ChargesResource extends BaseResource {
     return this.customResourceAction<Charge>('POST', `${this.buildPath(id)}/capture`, params, options);
   }
 
-  /**
-   * Verifies a charge with additional authentication data.
-   * 
-   * This method is used for direct bank payments
-   *  where additional customer authentication is required.
-   * 
-   * @param id - The unique identifier of the charge to verify
-   * @param params - The verification parameters
-   * @param options - Additional request options
-   * 
-   * @returns Promise that resolves to the verified charge with response metadata
-   * 
-   * @example
-   * ```typescript
-   * const verified = await magpie.charges.verify('ch_1234567890', {
-   *   confirmation_id: '1234567890',
-   *   otp: '123456'
-   * });
-   * ```
-   */
-  async verify(
-    id: string,
-    params: ChargeVerifyParams,
-    options: RequestOptions = {},
-  ): Promise<Charge & { lastResponse: LastResponse }> {
-    return this.customResourceAction<Charge>('POST', `${this.buildPath(id)}/verify`, params, options);
-  }
 
   /**
    * Voids a charge, canceling it before it can be captured.
