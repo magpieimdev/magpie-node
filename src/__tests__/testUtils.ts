@@ -319,6 +319,7 @@ export function createTestCharge(overrides: Record<string, any> = {}): Record<st
  */
 export function createTestLineItem(overrides: Record<string, any> = {}): Record<string, any> {
   return {
+    name: 'Test Product',
     amount: 10000,
     description: 'Test Product',
     quantity: 1,

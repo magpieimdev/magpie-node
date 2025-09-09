@@ -31,6 +31,7 @@ describe('CheckoutResource', () => {
     it('should provide access to session creation through checkout.sessions', async () => {
       const sessionData = {
         line_items: [{
+          name: 'Test Product',
           amount: 50000,
           description: 'Test Product',
           quantity: 1,

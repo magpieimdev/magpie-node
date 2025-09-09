@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2025-09-09
+
+### Fixed
+
+- **LineItem API Alignment** - Added missing required `name` field to LineItem interface to match API requirements
+- **Test Utilities** - Updated test utilities to include name field in line item creation helpers
+- **Type Safety** - Improved type safety for all line item operations across checkout sessions, payment links, and payment requests
+
+### Technical Improvements
+
+- Updated all test cases to include required name field in line item structures
+- Enhanced LineItem interface documentation with name field usage
+- Maintained full backward compatibility for existing LineItem API usage
+
 ## [1.2.1] - 2025-09-08
 
 ### Fixed

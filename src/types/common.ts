@@ -96,6 +96,9 @@ export type BillingAddressCollection = 'auto' | 'required';
  * to describe the products or services being purchased.
  */
 export interface LineItem {
+  /** The name of the line item. */
+  name: string;
+
   /** The amount of the line item in the smallest currency unit (e.g., cents). */
   amount: number;
 
